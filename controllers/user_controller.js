@@ -1,5 +1,6 @@
 const User = require('../models/user')
-const {setTimeout} = require('timers')
+const {v4} = require('uuid')
+const {set_User} = require('../service/auth')
 
 async function handleCreateUser(req,res) {
     const {name,email,password} = req.body
@@ -19,7 +20,11 @@ async function handleLogin(req, res) {
     if (!find) {
         return res.json({ err: "User not Found" });
     }
-    res.redirect('/');
+
+    const key = v4()
+    set_User(key,find)
+    res.cookie("id",key)
+    return res.redirect('/');
 }
 
 module.exports = {
