@@ -5,7 +5,7 @@ function set_User(id,user){
 }
 
 function get_User(id){
-    myMap.get(id)
+    return myMap.get(id)
 }
 
 module.exports = {

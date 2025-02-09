@@ -8,7 +8,7 @@
 <body>
     <h1>Url Shortner</h1>
     <% if (locals.ShortId) { %>
-     <p>localhost:8000/<%= ShortId %></p>
+     <p>localhost:8000/url/<%= ShortId %></p>
     <% } %>
     <div>
         <form action="/url" method="post">

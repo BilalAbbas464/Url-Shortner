@@ -1,6 +1,5 @@
 const shortId = require('shortid')
 const Url = require('../models/model')
-const shortid = require('shortid')
 
 async function generateShortId(req,res){
     const body = req.body
