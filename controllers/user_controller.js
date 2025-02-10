@@ -21,8 +21,7 @@ async function handleLogin(req, res) {
         return res.json({ err: "User not Found" });
     }
 
-    const key = v4()
-    set_User(key,find)
+    const key = set_User(find)
     res.cookie("id",key)
     return res.redirect('/');
 }
