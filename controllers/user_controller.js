@@ -22,7 +22,9 @@ async function handleLogin(req, res) {
     }
 
     const key = set_User(find)
-    res.cookie("id",key)
+    res.cookie("id",key,{
+        domain: '.localhost',
+    })
     return res.redirect('/');
 }
 
