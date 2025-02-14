@@ -1,25 +1,25 @@
 const {get_User} = require('../service/auth')
 
-async function restirectToLoggedInUser(req,res,next) {
-    const Id = req.headers['Authorization'];
-    console.log(Id)
-    if(!Id) return res.redirect('/login');
-    const token = Id.split('Bearer ')[1];
-    const find = get_User(token);
-    if(!find) return res.redirect('/login');
-    req.user = find;
-    next()
+function checkForAuthentication(req,res,next){
+    const headerValue = req.headers['Authorization'];
+    req.user = null
+    if(!headerValue || !headerValue.startsWith('Bearer'))
+        return next()
+    const token = headerValue.split('Bearer ')[1]
+    const user = get_User(token)
+    req.user = user
+    return next()
 }
 
-async function check_Auth(req,res,next) {
-    const Id = req.headers['authorization'];
-    const token = Id.split('Bearer ')[1];
-    const find = get_User(token);
-    req.user = find;
-    next()
+function restrictTo(roles){
+    return function(req,res,next){
+        if(!req.user) return res.redirect('/login')
+        if(roles.includes(req.user.role)) return res.end("UnAuthorized")
+        return next();
+        }
 }
 
 module.exports = {
-    restirectToLoggedInUser,
-    check_Auth,
+    checkForAuthentication,
+    restrictTo,
 }

@@ -6,7 +6,7 @@ const path = require('path')
 const static_router = require('./routes/static_router')
 const user_router = require('./routes/user')
 const cookie_parser = require('cookie-parser')
-const {restirectToLoggedInUser,check_Auth} = require('./middleware/auth')
+const {checkForAuthentication,restrictTo} = require('./middleware/auth')
 
 handleConnection("mongodb://127.0.0.1:27017/Short-Urls")
 
@@ -22,11 +22,13 @@ app.set('view engine','ejs')
 
 app.set('views',path.resolve('./views'))
 
-app.use('/url',restirectToLoggedInUser,urlRoute)
+app.use(checkForAuthentication)
+
+app.use('/url',restrictTo(["NORMAL"]),urlRoute)
 
 app.use('/user',user_router)
 
-app.use('/',check_Auth,static_router)
+app.use('/',static_router)
 
 app.listen(8000,'localhost',()=>{
     console.log("Server Started")
