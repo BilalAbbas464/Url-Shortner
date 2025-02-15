@@ -9,7 +9,7 @@ async function generateShortId(req,res){
         ShortId,
         Redirect_url: body.url,
         visitHistory:[],
-        created_By: req.user._id,
+        created_By: req.user.id,
     })
     return res.render('home',{
         ShortId,

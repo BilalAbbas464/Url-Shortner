@@ -1,12 +1,10 @@
 const {get_User} = require('../service/auth')
 
 function checkForAuthentication(req,res,next){
-    const headerValue = req.headers['Authorization'];
-    req.user = null
-    if(!headerValue || !headerValue.startsWith('Bearer'))
-        return next()
-    const token = headerValue.split('Bearer ')[1]
-    const user = get_User(token)
+    // const headerValue = req.headers['Authorization'];
+    const cookie = req.cookies?.id; 
+    if(!cookie) return next()
+    const user = get_User(cookie)
     req.user = user
     return next()
 }
@@ -14,7 +12,7 @@ function checkForAuthentication(req,res,next){
 function restrictTo(roles=[]){
     return function(req,res,next){
         if(!req.user) return res.redirect('/login')
-        if(roles.includes(req.user.role)) return res.end("UnAuthorized")
+        if(!roles.includes(req.user.role)) return res.end("UnAuthorized")
         return next();
         }
 }

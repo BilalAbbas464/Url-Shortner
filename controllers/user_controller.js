@@ -22,12 +22,12 @@ async function handleLogin(req, res) {
     }
 
     const key = set_User(find)
-    // res.cookie("id",key,{
-    //     domain: '.localhost',
-    //     expires: new Date(Date.now() + 300000),
-    //     httpOnly: true
-    // })
-    return res.json({key});
+    res.cookie("id",key,{
+        domain: '.localhost',
+        expires: new Date(Date.now() + 300000),
+        httpOnly: true
+    })
+    return res.redirect('/');
 }
 
 module.exports = {
